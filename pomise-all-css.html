@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Promise all() with CSS Links</title>
+  <style>
+    *{
+      font-family: sans-serif;
+      background-color: darkmagenta;
+    }
+  </style>
+  <!-- 
+    <link rel="stylesheet" type="text/css" href="big-font.css">
+    <link rel="stylesheet" type="text/css" href="color-font.css">
+   -->
+</head>
+<body>
+  <h1>Heading</h1>
+
+  <script>
+    let log = console.log;
+    let warn = console.warn;
+    const URL1 = "./big-font.css";
+    const URL2 = "./color-font.css";
+
+    let p1 = new Promise((resolve, reject) => {
+      let link = document.createElement("link");
+      link.setAttribute("rel", "stylesheet");
+      link.setAttribute("type", "text/css");
+      link.addEventListener("load", function(ev){
+        // the CSS has been loaded into the style tag
+        log("your css is here")
+        resolve(link);
+      });
+      link.addEventListener("error", function(err){
+        // there was an error
+        warn("your css is ready, NOT.");
+        reject(err)
+      })
+      link.href = URL1;
+      document.head.appendChild(link);
+    })    
+
+    let p2 = new Promise((resolve, reject) => {
+      let link = document.createElement("link");
+      link.setAttribute("rel", "stylesheet");
+      link.setAttribute("type", "text/css");
+      link.addEventListener("load", function(ev){
+        // the CSS has been loaded into the style tag
+        log("your css is here")
+        resolve(link);
+      });
+      link.addEventListener("error", function(err){
+        // there was an error
+        warn("your css is ready, NOT.");
+        reject(err)
+      })
+      link.href = URL2;
+      document.head.appendChild(link);
+    })    
+  
+    Promise.all([p1, p2])
+    .then((results) => {
+      log("Both the links for css have been loaded");
+      // now my page can run and use both the links
+      //OR images, or scripts.... etc
+    })
+    .catch((err) => {
+      warn("SOMETHING BAD HAPPENED!!!");
+    })
+  </script>
+</body>
+</html>
